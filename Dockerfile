@@ -15,18 +15,3 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-
-from maven as build
-
-workdir /app
-
-copy pom.xml /app/
-
-copy src /app/src
-RUN mvn -B clean package -DskipTests
-
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
